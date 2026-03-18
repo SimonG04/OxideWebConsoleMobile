@@ -108,15 +108,16 @@ export default function ProjectsPage() {
       () => [
         {
           value: 'New project',
-          onSelect: () => navigate(pb.projectsNew()),
+          navGroup: 'Actions',
+          action: pb.projectsNew(),
         },
         ...(allProjects?.items || []).map((p) => ({
           value: p.name,
-          onSelect: () => navigate(pb.project({ project: p.name })),
+          action: pb.project({ project: p.name }),
           navGroup: 'Go to project',
         })),
       ],
-      [navigate, allProjects]
+      [allProjects]
     )
   )
 

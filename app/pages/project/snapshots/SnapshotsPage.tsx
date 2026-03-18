@@ -171,10 +171,11 @@ export default function SnapshotsPage() {
       () => [
         {
           value: 'New snapshot',
-          onSelect: () => navigate(pb.snapshotsNew({ project })),
+          navGroup: 'Actions',
+          action: pb.snapshotsNew({ project }),
         },
       ],
-      [navigate, project]
+      [project]
     )
   )
 

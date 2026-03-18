@@ -6,7 +6,7 @@
  * Copyright Oxide Computer Company
  */
 import { useMemo, type ReactElement } from 'react'
-import { useLocation, useNavigate, type LoaderFunctionArgs } from 'react-router'
+import { useLocation, type LoaderFunctionArgs } from 'react-router'
 
 import { api, q, queryClient, usePrefetchedQuery } from '@oxide/api'
 import {
@@ -53,7 +53,6 @@ export async function projectLayoutLoader({ params }: LoaderFunctionArgs) {
 }
 
 export function ProjectLayoutBase({ overrideContentPane }: ProjectLayoutProps) {
-  const navigate = useNavigate()
   // project will always be there, instance may not
   const projectSelector = useProjectSelector()
   const { data: project } = usePrefetchedQuery(projectView(projectSelector))
@@ -77,9 +76,9 @@ export function ProjectLayoutBase({ overrideContentPane }: ProjectLayoutProps) {
           .map((i) => ({
             navGroup: `Project '${project.name}'`,
             value: i.value,
-            onSelect: () => navigate(i.path),
+            action: i.path,
           })),
-      [pathname, navigate, project.name, projectSelector]
+      [pathname, project.name, projectSelector]
     )
   )
 

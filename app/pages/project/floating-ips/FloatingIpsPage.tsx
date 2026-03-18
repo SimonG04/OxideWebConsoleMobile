@@ -221,15 +221,16 @@ export default function FloatingIpsPage() {
       () => [
         {
           value: 'New floating IP',
-          onSelect: () => navigate(pb.floatingIpsNew({ project })),
+          navGroup: 'Actions',
+          action: pb.floatingIpsNew({ project }),
         },
         ...(allFips?.items || []).map((f) => ({
           value: f.name,
-          onSelect: () => navigate(pb.floatingIpEdit({ project, floatingIp: f.name })),
+          action: pb.floatingIpEdit({ project, floatingIp: f.name }),
           navGroup: 'Go to floating IP',
         })),
       ],
-      [project, navigate, allFips]
+      [project, allFips]
     )
   )
 

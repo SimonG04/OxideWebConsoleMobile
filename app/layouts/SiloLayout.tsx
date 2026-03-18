@@ -6,7 +6,7 @@
  * Copyright Oxide Computer Company
  */
 import { useMemo } from 'react'
-import { useLocation, useNavigate } from 'react-router'
+import { useLocation } from 'react-router'
 
 import {
   Access16Icon,
@@ -25,7 +25,6 @@ import { pb } from '~/util/path-builder'
 import { ContentPane, PageContainer } from './helpers'
 
 export default function SiloLayout() {
-  const navigate = useNavigate()
   const { pathname } = useLocation()
   const { me } = useCurrentUser()
 
@@ -43,9 +42,9 @@ export default function SiloLayout() {
           .map((i) => ({
             navGroup: `Silo '${me.siloName}'`,
             value: i.value,
-            onSelect: () => navigate(i.path),
+            action: i.path,
           })),
-      [pathname, navigate, me.siloName]
+      [pathname, me.siloName]
     )
   )
 

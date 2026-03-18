@@ -137,15 +137,16 @@ export default function IpPoolsPage() {
       () => [
         {
           value: 'New IP pool',
-          onSelect: () => navigate(pb.ipPoolsNew()),
+          navGroup: 'Actions',
+          action: pb.ipPoolsNew(),
         },
         ...(allPools?.items || []).map((p) => ({
           value: p.name,
-          onSelect: () => navigate(pb.ipPool({ pool: p.name })),
+          action: pb.ipPool({ pool: p.name }),
           navGroup: 'Go to IP pool',
         })),
       ],
-      [navigate, allPools]
+      [allPools]
     )
   )
 

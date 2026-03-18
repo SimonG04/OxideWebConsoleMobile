@@ -141,15 +141,16 @@ export default function VpcsPage() {
       () => [
         {
           value: 'New VPC',
-          onSelect: () => navigate(pb.vpcsNew({ project })),
+          navGroup: 'Actions',
+          action: pb.vpcsNew({ project }),
         },
         ...(allVpcs?.items || []).map((v) => ({
           value: v.name,
-          onSelect: () => navigate(pb.vpc({ project, vpc: v.name })),
+          action: pb.vpc({ project, vpc: v.name }),
           navGroup: 'Go to VPC',
         })),
       ],
-      [project, allVpcs, navigate]
+      [project, allVpcs]
     )
   )
 

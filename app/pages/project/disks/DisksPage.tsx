@@ -8,7 +8,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useCallback, useMemo } from 'react'
-import { Outlet, useNavigate, type LoaderFunctionArgs } from 'react-router'
+import { Outlet, type LoaderFunctionArgs } from 'react-router'
 
 import {
   api,
@@ -189,7 +189,6 @@ export default function DisksPage() {
     emptyState: <EmptyState />,
   })
 
-  const navigate = useNavigate()
   const { data: allDisks } = useQuery(
     q(api.diskList, { query: { project, limit: ALL_ISH } })
   )
@@ -198,15 +197,16 @@ export default function DisksPage() {
       () => [
         {
           value: 'New disk',
-          onSelect: () => navigate(pb.disksNew({ project })),
+          navGroup: 'Actions',
+          action: pb.disksNew({ project }),
         },
         ...(allDisks?.items || []).map((d) => ({
           value: d.name,
-          onSelect: () => navigate(pb.disk({ project, disk: d.name })),
+          action: pb.disk({ project, disk: d.name }),
           navGroup: 'Go to disk',
         })),
       ],
-      [navigate, project, allDisks]
+      [project, allDisks]
     )
   )
 
