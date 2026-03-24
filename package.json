@@ -30,7 +30,8 @@
     "openapi-gen-ts": "openapi-gen-ts",
     "gen-api": "./tools/generate_api_client.sh",
     "postinstall": "patch-package",
-    "prepare": "husky"
+    "prepare": "husky",
+    "vercel-build": "vite build"
   },
   "private": true,
   "dependencies": {
