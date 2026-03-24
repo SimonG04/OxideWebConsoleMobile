@@ -6,7 +6,7 @@
  * Copyright Oxide Computer Company
  */
 import cn from 'classnames'
-import React, { useRef, type JSX, type ReactElement } from 'react'
+import React, { useRef, useState, useEffect, type JSX, type ReactElement } from 'react'
 import SimpleBar from 'simplebar-react'
 
 import { useIsOverflow } from '~/hooks/use-is-overflow'
@@ -15,23 +15,106 @@ import { classed } from '~/util/classed'
 export type TableProps = JSX.IntrinsicElements['table']
 export function Table({ className, ...props }: TableProps) {
   const overflowRef = useRef<HTMLDivElement>(null)
+  const tableRef = useRef<HTMLTableElement>(null)
   const { isOverflow, scrollStart, scrollEnd } = useIsOverflow(overflowRef, 'horizontal')
+  const [isCardView, setIsCardView] = useState(false)
+
+  // Sync headers to td data-labels for mobile card view
+  useEffect(() => {
+    if (isCardView && tableRef.current) {
+      const theadRows = Array.from(tableRef.current.querySelectorAll('thead tr'))
+
+      // Build a 2D representation of the headers to support colspans/rowspans
+      const grid: { text: string; isGroup: boolean; th: Element }[][] =[]
+      theadRows.forEach((row, rowIndex) => {
+        const ths = Array.from(row.querySelectorAll('th'))
+        let colIndex = 0
+        ths.forEach((th) => {
+          while (grid[rowIndex] && grid[rowIndex][colIndex]) {
+            colIndex++
+          }
+          const colspan = parseInt(th.getAttribute('colspan') || '1', 10)
+          const rowspan = parseInt(th.getAttribute('rowspan') || '1', 10)
+
+          // Fallback to accessibility tags or explicit mobile labels for empty <th> texts (like ID or Actions)
+          const text = th.getAttribute('data-mobile-label') || th.getAttribute('aria-label') || th.textContent?.trim() || ''
+
+          for (let r = 0; r < rowspan; r++) {
+            for (let c = 0; c < colspan; c++) {
+              if (!grid[rowIndex + r]) grid[rowIndex + r] = []
+              grid[rowIndex + r][colIndex + c] = { text, isGroup: colspan > 1, th }
+            }
+          }
+          colIndex += colspan
+        })
+      })
+
+      const lastRow = grid[grid.length - 1] ||[]
+      const headers = lastRow.map((cell) => (cell ? cell.text : ''))
+
+      const rows = tableRef.current.querySelectorAll('tbody tr')
+      rows.forEach((row) => {
+        const tds = Array.from(row.querySelectorAll('td'))
+        tds.forEach((td, index) => {
+          if (headers[index]) {
+            td.setAttribute('data-label', headers[index])
+          } else {
+            td.removeAttribute('data-label')
+          }
+
+          // Inject group headings from preceding header rows
+          if (grid.length > 1) {
+            const currentGroup = grid[grid.length - 2][index]
+            const prevGroup = index > 0 ? grid[grid.length - 2][index - 1] : null
+            if (currentGroup && currentGroup.isGroup && currentGroup.text) {
+              if (!prevGroup || prevGroup.th !== currentGroup.th) {
+                td.setAttribute('data-group-label', currentGroup.text)
+              } else {
+                td.removeAttribute('data-group-label')
+              }
+            } else {
+              td.removeAttribute('data-group-label')
+            }
+          }
+        })
+      })
+    }
+  }, [isCardView, props.children])
 
   return (
-    <SimpleBar
-      scrollableNodeProps={{ ref: overflowRef }}
-      className={cn(
-        'overflow-x-auto rounded-md pb-4',
-        !scrollStart && 'scrolled',
-        isOverflow && !scrollEnd && 'overflowing'
-      )}
-      autoHide={false}
-    >
-      <table
-        className={cn(className, 'ox-table text-sans-md w-full border-separate')}
-        {...props}
-      />
-    </SimpleBar>
+    <div className="relative group/table-wrapper">
+      <button
+        className={cn(
+          "md:hidden flex h-8 w-12 items-center justify-center text-quaternary hover:text-default border border-secondary border-b-0 rounded-t-lg focus:outline-none relative z-20 pb-px -mb-px",
+          isCardView ? "bg-secondary light:bg-[#fdfdfd]" : "bg-secondary"
+        )}
+        onClick={() => setIsCardView(!isCardView)}
+        aria-label={isCardView ? 'Switch to table view' : 'Switch to card view'}
+        type="button"
+      >
+        {isCardView ? (
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 3h12v10H2V3zm2 2v2h3V5H4zm5 0v2h3V5H9zm-5 3v2h3V8H4zm5 0v2h3V8H9z"/></svg>
+        ) : (
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 3h12v3H2V3zm0 5h12v3H2V8zm0 5h12v3H2v-3z"/></svg>
+        )}
+      </button>
+      <SimpleBar
+        scrollableNodeProps={{ ref: overflowRef }}
+        className={cn(
+          'overflow-x-auto rounded-md',
+          !isCardView && 'pb-4',
+          !scrollStart && !isCardView && 'scrolled',
+          isOverflow && !scrollEnd && !isCardView && 'overflowing'
+        )}
+        autoHide={false}
+      >
+        <table
+          ref={tableRef}
+          className={cn(className, 'ox-table text-sans-md w-full border-separate', { 'card-view': isCardView })}
+          {...props}
+        />
+      </SimpleBar>
+    </div>
   )
 }
 

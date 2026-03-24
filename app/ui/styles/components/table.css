@@ -50,9 +50,11 @@ table.ox-table {
   }
 
   /* First column is sticky */
-  & th:first-of-type,
-  & td:first-of-type {
-    @apply bg-default sticky left-0 z-10;
+  @media (min-width: 768px) {
+    & th:first-of-type,
+    & td:first-of-type {
+      @apply bg-default sticky left-0 z-10;
+    }
   }
 
   /* Border between sticky first column and second column:
@@ -70,9 +72,11 @@ table.ox-table {
   Last column is sticky if it
   is a more actions cell
   */
-  & th.action-col,
-  & td.action-col {
-    @apply bg-default sticky right-0 w-10;
+  @media (min-width: 768px) {
+    & th.action-col,
+    & td.action-col {
+      @apply bg-default sticky right-0 w-10;
+    }
   }
   & th.action-col {
     @apply bg-secondary;
@@ -311,6 +315,106 @@ table.ox-table {
   }
 
   /* === End table selection styles === */
+
+  /* === Mobile Card View === */
+  @media (max-width: 767px) {
+    /* Remove top-left rounding on mobile to match the attached tab */
+    & th:first-of-type > div,
+    & th:first-of-type:after {
+      border-top-left-radius: 0 !important;
+    }
+
+    &.card-view {
+      @apply block p-2.5 rounded-lg border border-secondary bg-secondary light:bg-[#fdfdfd];
+      border-top-left-radius: 0;
+
+      & thead {
+        @apply hidden;
+      }
+
+      & tbody {
+        @apply flex flex-col gap-2.5;
+      }
+
+      & tr {
+        @apply flex flex-col rounded-lg border border-secondary bg-default shadow-sm overflow-hidden;
+        &.is-selected {
+          @apply border-accent;
+          box-shadow: 0 0 0 1px var(--stroke-accent);
+        }
+      }
+
+      & td {
+        @apply flex flex-row items-start justify-between gap-4 border-b border-secondary p-3;
+        white-space: normal;
+      }
+
+      & td:last-of-type {
+        @apply border-b-0;
+      }
+
+      & td > div {
+        @apply !border-none !p-0 !h-auto !w-auto !flex-1 !justify-end !text-left !overflow-visible !bg-transparent !shadow-none min-w-0;
+        white-space: normal;
+        overflow-wrap: break-word;
+      }
+
+      & td > div .whitespace-nowrap {
+        white-space: normal !important;
+      }
+
+      & td > div .truncate {
+        white-space: normal !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+
+      & td:not([data-group-label])::before {
+        content: attr(data-label);
+        @apply text-secondary text-mono-sm mr-4 block whitespace-nowrap overflow-hidden text-ellipsis text-left shrink-0;
+        padding-top: 0.125rem;
+      }
+
+      /* Group Label Styles */
+      & td[data-group-label] {
+        @apply flex-wrap;
+      }
+      & td[data-group-label]::before {
+        content: attr(data-group-label);
+        width: calc(100% + 1.5rem);
+        margin: -0.75rem -0.75rem 0.75rem -0.75rem;
+        @apply bg-secondary text-tertiary text-mono-sm px-3 py-1.5 border-b border-secondary block shrink-0;
+        order: -2;
+      }
+      & td[data-group-label]::after {
+        content: attr(data-label);
+        @apply text-secondary text-mono-sm mr-4 block whitespace-nowrap overflow-hidden text-ellipsis text-left shrink-0;
+        padding-top: 0.125rem;
+        order: -1;
+      }
+      & td[data-group-label] > div {
+        order: 0;
+      }
+
+      /* First row styling */
+      & td:first-child {
+        @apply bg-secondary light:bg-raise border-b border-secondary;
+      }
+
+      /* Action Column (Footer) */
+      & td.action-col {
+        @apply bg-secondary light:bg-raise justify-end gap-2 border-t border-secondary mt-0;
+      }
+      & td.action-col::before,
+      & td.action-col::after {
+        content: none !important;
+      }
+      & td.action-col > div {
+        @apply flex-row justify-end gap-2 w-full !text-right;
+      }
+    }
+  }
 }
 
 /*
@@ -326,33 +430,35 @@ th:last-of-type.action-col {
   transition-duration: 250ms;
 }
 
-.scrolled td:first-of-type,
-.scrolled th:first-of-type {
-  box-shadow: 6px 0 8px -2px oklch(0 0 0 / 0.2);
-}
-.overflowing td:last-of-type.action-col,
-.overflowing th:last-of-type.action-col {
-  box-shadow: -6px 0 8px -2px oklch(0 0 0 / 0.2);
-}
-[data-theme='light'] .scrolled td:first-of-type,
-[data-theme='light'] .scrolled th:first-of-type {
-  box-shadow: 6px 0 8px -2px oklch(0 0 0 / 0.05);
-}
-[data-theme='light'] .overflowing td:last-of-type.action-col,
-[data-theme='light'] .overflowing th:last-of-type.action-col {
-  box-shadow: -6px 0 8px -2px oklch(0 0 0 / 0.05);
-}
+@media (min-width: 768px) {
+  .scrolled td:first-of-type,
+  .scrolled th:first-of-type {
+    box-shadow: 6px 0 8px -2px oklch(0 0 0 / 0.2);
+  }
+  .overflowing td:last-of-type.action-col,
+  .overflowing th:last-of-type.action-col {
+    box-shadow: -6px 0 8px -2px oklch(0 0 0 / 0.2);
+  }
+  [data-theme='light'] .scrolled td:first-of-type,
+  [data-theme='light'] .scrolled th:first-of-type {
+    box-shadow: 6px 0 8px -2px oklch(0 0 0 / 0.05);
+  }
+  [data-theme='light'] .overflowing td:last-of-type.action-col,
+  [data-theme='light'] .overflowing th:last-of-type.action-col {
+    box-shadow: -6px 0 8px -2px oklch(0 0 0 / 0.05);
+  }
 
-/*
-  Stops shadow from overflowing below
-*/
-.scrolled td:first-of-type,
-.scrolled th:first-of-type {
-  clip-path: inset(0px -40px 0px 0px);
-}
-.overflowing td:last-of-type.action-col,
-.overflowing th:last-of-type.action-col {
-  clip-path: inset(0px 0px 0px -40px);
+  /*
+    Stops shadow from overflowing below
+  */
+  .scrolled td:first-of-type,
+  .scrolled th:first-of-type {
+    clip-path: inset(0px -40px 0px 0px);
+  }
+  .overflowing td:last-of-type.action-col,
+  .overflowing th:last-of-type.action-col {
+    clip-path: inset(0px 0px 0px -40px);
+  }
 }
 
 .simplebar-scrollbar {

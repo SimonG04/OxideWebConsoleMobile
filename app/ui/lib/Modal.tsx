@@ -21,9 +21,9 @@ import { ModalContext } from './modal-context'
 type Width = 'narrow' | 'medium' | 'free'
 
 const widthClass: Record<Width, string> = {
-  narrow: 'w-full max-w-[24rem]',
-  medium: 'w-full max-w-md',
-  free: 'min-w-[24rem] max-w-3xl', // give it a big max just to be safe
+  narrow: 'w-[calc(100%-2rem)] md:w-full max-w-[24rem]',
+  medium: 'w-[calc(100%-2rem)] md:w-full max-w-md',
+  free: 'w-[calc(100%-2rem)] md:w-full md:min-w-[24rem] max-w-3xl', // give it a big max just to be safe
 }
 
 export type ModalProps = {
