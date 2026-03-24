@@ -8,12 +8,16 @@
 
 /* Tab list container styles */
 .ox-tabs-list {
-  @apply mb-8 flex bg-transparent;
+  @apply mb-8 flex bg-transparent overflow-x-auto border-b border-secondary;
+  scrollbar-width: none;
+}
+
+.ox-tabs-list::-webkit-scrollbar {
+  display: none;
 }
 
 .ox-tabs-list:after {
-  @apply border-secondary block w-full border-b;
-  content: '';
+  display: none;
 }
 
 /* Panel styles */
@@ -23,7 +27,11 @@
 
 /* Base tab styles */
 .ox-tab {
-  @apply text-mono-sm text-tertiary border-secondary h-10 space-x-2 border-b px-1.5 pt-2 pb-1 whitespace-nowrap uppercase !no-underline;
+  @apply text-mono-sm text-tertiary border-secondary h-10 space-x-2 border-b px-1.5 pt-2 pb-1 whitespace-nowrap uppercase !no-underline flex-shrink-0;
+}
+
+.ox-tabs-list .ox-tab {
+  @apply -mb-px;
 }
 
 .ox-tabs-list .ox-tab > * {

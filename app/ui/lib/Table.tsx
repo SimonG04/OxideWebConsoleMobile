@@ -12,6 +12,9 @@ import SimpleBar from 'simplebar-react'
 import { useIsOverflow } from '~/hooks/use-is-overflow'
 import { classed } from '~/util/classed'
 
+export const TableContext = React.createContext<{ isCardView: boolean }>({ isCardView: false })
+export const useTableContext = () => React.useContext(TableContext)
+
 export type TableProps = JSX.IntrinsicElements['table']
 export function Table({ className, ...props }: TableProps) {
   const overflowRef = useRef<HTMLDivElement>(null)
@@ -37,7 +40,7 @@ export function Table({ className, ...props }: TableProps) {
           const rowspan = parseInt(th.getAttribute('rowspan') || '1', 10)
 
           // Fallback to accessibility tags or explicit mobile labels for empty <th> texts (like ID or Actions)
-          const text = th.getAttribute('data-mobile-label') || th.getAttribute('aria-label') || th.textContent?.trim() || ''
+          const text = th.getAttribute('data-mobile-label') || th.getAttribute('aria-label') || th.textContent?.trim() || (colIndex === 0 ? 'ID' : '')
 
           for (let r = 0; r < rowspan; r++) {
             for (let c = 0; c < colspan; c++) {
@@ -82,10 +85,11 @@ export function Table({ className, ...props }: TableProps) {
   }, [isCardView, props.children])
 
   return (
+    <TableContext.Provider value={{ isCardView }}>
     <div className="relative group/table-wrapper">
       <button
         className={cn(
-          "md:hidden flex h-8 w-12 items-center justify-center text-quaternary hover:text-default border border-secondary border-b-0 rounded-t-lg focus:outline-none relative z-20 pb-px -mb-px",
+          "md:hidden flex h-8 w-12 items-center justify-center text-quaternary hover:text-default border border-secondary border-b-0 rounded-t-lg focus:outline-none relative z-[1] pb-px -mb-px",
           isCardView ? "bg-secondary light:bg-[#fdfdfd]" : "bg-secondary"
         )}
         onClick={() => setIsCardView(!isCardView)}
@@ -98,6 +102,32 @@ export function Table({ className, ...props }: TableProps) {
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 3h12v3H2V3zm0 5h12v3H2V8zm0 5h12v3H2v-3z"/></svg>
         )}
       </button>
+
+      {!isCardView && isOverflow && (
+        <>
+          {!scrollStart && (
+            <button
+              type="button"
+              onClick={() => overflowRef.current?.scrollBy({ left: -200, behavior: 'smooth' })}
+              className="absolute top-1/2 -translate-y-1/2 left-0 z-10 flex h-10 w-6 items-center justify-center bg-raise/90 shadow-sm border border-secondary border-l-0 rounded-r-md text-secondary hover:text-default backdrop-blur-sm md:hidden focus:outline-none"
+              aria-label="Scroll left"
+            >
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M10.5 13.5L4 8l6.5-5.5v11z"/></svg>
+            </button>
+          )}
+          {!scrollEnd && (
+            <button
+              type="button"
+              onClick={() => overflowRef.current?.scrollBy({ left: 200, behavior: 'smooth' })}
+              className="absolute top-1/2 -translate-y-1/2 right-0 z-10 flex h-10 w-6 items-center justify-center bg-raise/90 shadow-sm border border-secondary border-r-0 rounded-l-md text-secondary hover:text-default backdrop-blur-sm md:hidden focus:outline-none"
+              aria-label="Scroll right"
+            >
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M5.5 2.5L12 8l-6.5 5.5v-11z"/></svg>
+            </button>
+          )}
+        </>
+      )}
+
       <SimpleBar
         scrollableNodeProps={{ ref: overflowRef }}
         className={cn(
@@ -115,6 +145,7 @@ export function Table({ className, ...props }: TableProps) {
         />
       </SimpleBar>
     </div>
+    </TableContext.Provider>
   )
 }
 

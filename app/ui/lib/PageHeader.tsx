@@ -9,7 +9,7 @@ import type { ReactElement } from 'react'
 
 import { classed } from '~/util/classed'
 
-export const PageHeader = classed.header`mb-16 mt-12 flex items-center justify-between`
+export const PageHeader = classed.header`mb-8 mt-6 md:mb-16 md:mt-12 flex flex-col md:flex-row md:items-center items-start justify-between px-3 md:px-0 gap-4 md:gap-0`
 
 interface PageTitleProps {
   icon?: ReactElement

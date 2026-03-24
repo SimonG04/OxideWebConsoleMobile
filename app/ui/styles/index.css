@@ -147,6 +147,11 @@
     --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
     --ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
   }
+  @media (max-width: 767px) {
+    :root {
+      --content-gutter: 5px;
+    }
+  }
 }
 
 @layer base {

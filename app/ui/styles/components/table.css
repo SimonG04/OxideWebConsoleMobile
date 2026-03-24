@@ -26,11 +26,12 @@ table.ox-table {
   & tbody tr td:first-child {
     border-left-width: 1px;
   }
+
   & tbody tr td:last-child {
     border-right-width: 1px;
   }
 
-  & tr:last-child td > div {
+  & tr:last-child td>div {
     border-bottom-width: 0px;
   }
 
@@ -45,12 +46,13 @@ table.ox-table {
   Adds padding to all cells except from
   the action cells since they are a fixed width
   */
-  & td:not(.action-col) > div {
+  & td:not(.action-col)>div {
     @apply pr-8;
   }
 
   /* First column is sticky */
   @media (min-width: 768px) {
+
     & th:first-of-type,
     & td:first-of-type {
       @apply bg-default sticky left-0 z-10;
@@ -59,12 +61,13 @@ table.ox-table {
 
   /* Border between sticky first column and second column:
      first column owns the right border, second column drops its left border */
-  & td:first-of-type > div,
-  & th:first-of-type > div {
+  & td:first-of-type>div,
+  & th:first-of-type>div {
     @apply border-r;
   }
-  & td:nth-of-type(2) > div,
-  & th:nth-of-type(2) > div {
+
+  & td:nth-of-type(2)>div,
+  & th:nth-of-type(2)>div {
     @apply border-l-0;
   }
 
@@ -73,27 +76,30 @@ table.ox-table {
   is a more actions cell
   */
   @media (min-width: 768px) {
+
     & th.action-col,
     & td.action-col {
       @apply bg-default sticky right-0 w-10;
     }
+
+    & th.action-col>div,
+    & td.action-col>div {
+      @apply !m-0 w-10 !p-0;
+    }
   }
+
   & th.action-col {
     @apply bg-secondary;
   }
-  & th.action-col > div,
-  & td.action-col > div {
-    @apply !m-0 w-10 !p-0;
-  }
 
-  & td:last-of-type > div {
+  & td:last-of-type>div {
     @apply -m-px;
   }
 
   /*
     Highlight when hovering over the action-col cell
   */
-  & td.action-col:hover > div {
+  & td.action-col:hover>div {
     @apply bg-raise;
   }
 
@@ -108,11 +114,11 @@ table.ox-table {
     @apply border-r-0 border-b-0 pr-px;
   }
 
-  & tr:last-of-type td:last-of-type.action-col > div {
+  & tr:last-of-type td:last-of-type.action-col>div {
     border-bottom-right-radius: var(--table-border-radius);
   }
 
-  & tr:last-of-type td:first-of-type > div {
+  & tr:last-of-type td:first-of-type>div {
     border-bottom-left-radius: var(--table-border-radius);
   }
 
@@ -138,7 +144,7 @@ table.ox-table {
     @apply !bg-default border-t-0 border-l-0;
   }
 
-  & th:first-of-type > div {
+  & th:first-of-type>div {
     border-top-left-radius: var(--table-border-radius);
     @apply bg-secondary w-[calc(100%+1px)];
   }
@@ -152,7 +158,7 @@ table.ox-table {
     @apply !bg-default !border-t-0 !border-r-0;
   }
 
-  & th:last-of-type.action-col > div {
+  & th:last-of-type.action-col>div {
     border-top-right-radius: var(--table-border-radius);
     @apply bg-secondary;
   }
@@ -193,7 +199,7 @@ table.ox-table {
    */
 
   /* Left-most cell of a single selection */
-  & .is-selected:not(.multi-selection) td:first-child > div {
+  & .is-selected:not(.multi-selection) td:first-child>div {
     border-top-left-radius: 0.1875rem;
     border-bottom-left-radius: 0.1875rem;
     box-shadow:
@@ -202,7 +208,7 @@ table.ox-table {
   }
 
   /* Right-most cell of a single selection */
-  & .is-selected:not(.multi-selection) td:last-child > div {
+  & .is-selected:not(.multi-selection) td:last-child>div {
     border-top-right-radius: 0.1875rem;
     box-shadow:
       1px -1px var(--stroke-accent),
@@ -211,7 +217,7 @@ table.ox-table {
   }
 
   /* All cells of a single selection */
-  & .is-selected:not(.multi-selection) td > div {
+  & .is-selected:not(.multi-selection) td>div {
     box-shadow:
       0px 1px var(--stroke-accent),
       0px -1px var(--stroke-accent);
@@ -220,34 +226,34 @@ table.ox-table {
     height: calc(100% + 1px);
   }
 
-  & .is-selected:not(.multi-selection):last-of-type td > div {
+  & .is-selected:not(.multi-selection):last-of-type td>div {
     margin-top: -1px;
     height: calc(100% + 3px);
   }
 
   /* Defines the top border of a selection */
-  & .is-selected td > div {
+  & .is-selected td>div {
     box-shadow: 0px -1px var(--stroke-accent);
   }
 
   /* Ensures subsequent, interior selected rows don't have a top border */
-  & .multi-selection:not(.selection-start):not(.selection-end) td > div {
+  & .multi-selection:not(.selection-start):not(.selection-end) td>div {
     box-shadow: none;
   }
 
   /* Adds the selected border for the top left corner of a selection */
-  & .selection-start td:first-child > div {
+  & .selection-start td:first-child>div {
     border-top-left-radius: 0.1875rem;
     box-shadow: -1px -1px var(--stroke-accent);
     margin-right: -3px;
   }
 
   /* Ensures subsequent, interior selections have side borders */
-  & .multi-selection:not(.selection-start):not(.selection-end) td:first-child > div {
+  & .multi-selection:not(.selection-start):not(.selection-end) td:first-child>div {
     box-shadow: -1px 0px var(--stroke-accent);
   }
 
-  & .multi-selection:not(.selection-start):not(.selection-end) td:last-child > div {
+  & .multi-selection:not(.selection-start):not(.selection-end) td:last-child>div {
     box-shadow: 1px 0px var(--stroke-accent);
   }
 
@@ -258,20 +264,21 @@ table.ox-table {
   }
 
   /* Adds the selected border for the top right corner of a selection */
-  & .selection-start td:last-child > div {
+  & .selection-start td:last-child>div {
     border-top-right-radius: 0.1875rem;
     box-shadow: 1px -1px var(--stroke-accent);
   }
+
   /* Ensures the top right border and the cell next to it have their box-shadows overlap */
-  & .selection-start td:nth-last-child(2) > div {
+  & .selection-start td:nth-last-child(2)>div {
     margin-right: -3px;
   }
 
-  & .selection-end td > div {
+  & .selection-end td>div {
     box-shadow: 0px 1px var(--stroke-accent);
   }
 
-  & .selection-end td > div {
+  & .selection-end td>div {
     border-bottom: 0;
     height: calc(100% + 3px);
     margin-top: -5px;
@@ -279,7 +286,7 @@ table.ox-table {
   }
 
   /* Account for layout shift at the bottom of the table as best we can */
-  & .selection-end:last-of-type td > div {
+  & .selection-end:last-of-type td>div {
     margin-top: -4px;
     height: calc(100% + 8px);
     margin-bottom: -1px;
@@ -287,7 +294,7 @@ table.ox-table {
 
   /* Correct for firefox's wider variation in table border spacing */
   @supports (-moz-appearance: none) {
-    & .selection-end:last-of-type td > div {
+    & .selection-end:last-of-type td>div {
       margin-top: -2px;
       height: calc(100% + 4px);
       padding-top: 2px;
@@ -296,19 +303,19 @@ table.ox-table {
   }
 
   /* Adds the selected border for the bottom left corner of a selection */
-  & .selection-end td:first-child > div {
+  & .selection-end td:first-child>div {
     border-bottom-left-radius: 0.1875rem;
     box-shadow: -1px 1px var(--stroke-accent);
     margin-right: -4px;
   }
 
-  & .selection-end td:last-child > div {
+  & .selection-end td:last-child>div {
     border-bottom-right-radius: 0.1875rem;
     box-shadow: 1px 1px var(--stroke-accent);
   }
 
-  & .selection-end td:last-child > div,
-  & .is-selected:not(.multi-selection) td:last-child > div {
+  & .selection-end td:last-child>div,
+  & .is-selected:not(.multi-selection) td:last-child>div {
     @apply before:border-accent-tertiary relative -ml-0.5 border-l-0 before:absolute before:top-0 before:bottom-1 before:left-0.5 before:block before:h-full before:border-l;
     /* Avoid layout shift caused by the border being inline with the content */
     padding-left: calc(1rem - 1px);
@@ -318,8 +325,9 @@ table.ox-table {
 
   /* === Mobile Card View === */
   @media (max-width: 767px) {
+
     /* Remove top-left rounding on mobile to match the attached tab */
-    & th:first-of-type > div,
+    & th:first-of-type>div,
     & th:first-of-type:after {
       border-top-left-radius: 0 !important;
     }
@@ -338,6 +346,7 @@ table.ox-table {
 
       & tr {
         @apply flex flex-col rounded-lg border border-secondary bg-default shadow-sm overflow-hidden;
+
         &.is-selected {
           @apply border-accent;
           box-shadow: 0 0 0 1px var(--stroke-accent);
@@ -345,7 +354,7 @@ table.ox-table {
       }
 
       & td {
-        @apply flex flex-row items-start justify-between gap-4 border-b border-secondary p-3;
+        @apply flex flex-row items-start justify-between gap-x-4 gap-y-0 border-b border-secondary p-3;
         white-space: normal;
       }
 
@@ -353,17 +362,17 @@ table.ox-table {
         @apply border-b-0;
       }
 
-      & td > div {
-        @apply !border-none !p-0 !h-auto !w-auto !flex-1 !justify-end !text-left !overflow-visible !bg-transparent !shadow-none min-w-0;
+      & td>div {
+        @apply !border-none !p-0 !h-auto !w-auto !flex-1 !justify-end !text-right !overflow-visible !bg-transparent !shadow-none min-w-0;
         white-space: normal;
         overflow-wrap: break-word;
       }
 
-      & td > div .whitespace-nowrap {
+      & td>div .whitespace-nowrap {
         white-space: normal !important;
       }
 
-      & td > div .truncate {
+      & td>div .truncate {
         white-space: normal !important;
         display: -webkit-box !important;
         -webkit-line-clamp: 2;
@@ -380,6 +389,7 @@ table.ox-table {
       & td[data-group-label] {
         @apply flex-wrap;
       }
+
       & td[data-group-label]::before {
         content: attr(data-group-label);
         width: calc(100% + 1.5rem);
@@ -387,13 +397,15 @@ table.ox-table {
         @apply bg-secondary text-tertiary text-mono-sm px-3 py-1.5 border-b border-secondary block shrink-0;
         order: -2;
       }
+
       & td[data-group-label]::after {
         content: attr(data-label);
         @apply text-secondary text-mono-sm mr-4 block whitespace-nowrap overflow-hidden text-ellipsis text-left shrink-0;
         padding-top: 0.125rem;
         order: -1;
       }
-      & td[data-group-label] > div {
+
+      & td[data-group-label]>div {
         order: 0;
       }
 
@@ -401,17 +413,24 @@ table.ox-table {
       & td:first-child {
         @apply bg-secondary light:bg-raise border-b border-secondary;
       }
+      & td:first-child > div {
+        @apply ml-auto justify-end text-right w-full;
+      }
 
       /* Action Column (Footer) */
       & td.action-col {
         @apply bg-secondary light:bg-raise justify-end gap-2 border-t border-secondary mt-0;
       }
+
       & td.action-col::before,
       & td.action-col::after {
         content: none !important;
       }
-      & td.action-col > div {
+
+      & td.action-col>div {
         @apply flex-row justify-end gap-2 w-full !text-right;
+        width: 100% !important;
+        overflow: visible !important;
       }
     }
   }
@@ -431,18 +450,22 @@ th:last-of-type.action-col {
 }
 
 @media (min-width: 768px) {
+
   .scrolled td:first-of-type,
   .scrolled th:first-of-type {
     box-shadow: 6px 0 8px -2px oklch(0 0 0 / 0.2);
   }
+
   .overflowing td:last-of-type.action-col,
   .overflowing th:last-of-type.action-col {
     box-shadow: -6px 0 8px -2px oklch(0 0 0 / 0.2);
   }
+
   [data-theme='light'] .scrolled td:first-of-type,
   [data-theme='light'] .scrolled th:first-of-type {
     box-shadow: 6px 0 8px -2px oklch(0 0 0 / 0.05);
   }
+
   [data-theme='light'] .overflowing td:last-of-type.action-col,
   [data-theme='light'] .overflowing th:last-of-type.action-col {
     box-shadow: -6px 0 8px -2px oklch(0 0 0 / 0.05);
@@ -455,6 +478,7 @@ th:last-of-type.action-col {
   .scrolled th:first-of-type {
     clip-path: inset(0px -40px 0px 0px);
   }
+
   .overflowing td:last-of-type.action-col,
   .overflowing th:last-of-type.action-col {
     clip-path: inset(0px 0px 0px -40px);

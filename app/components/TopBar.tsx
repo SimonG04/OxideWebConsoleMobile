@@ -43,12 +43,27 @@ export function TopBar({ systemOrSilo }: { systemOrSilo: 'system' | 'silo' }) {
         <HomeButton level={systemOrSilo} />
       </div>
       {/* Height is governed by PageContainer grid on desktop, explicit on mobile */}
-      <div className="bg-default border-secondary flex h-[var(--top-bar-height)] shrink-0 items-center justify-between gap-4 border-b px-3 md:h-auto">
-        <div className="flex min-w-0 flex-1 items-center gap-2.5">
-          <MobileMenuButton />
+      <div className="bg-default border-secondary flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-4 border-b px-3 py-2 md:py-0 min-h-[var(--top-bar-height)] md:h-auto shrink-0">
+        <div className="flex items-center justify-between w-full md:w-auto md:flex-1">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <MobileMenuButton />
+            <div className="hidden md:block">
+              <Breadcrumbs />
+            </div>
+          </div>
+          <div className="flex items-center gap-2 md:hidden">
+            {me.fleetViewer && <SiloSystemPicker level={systemOrSilo} />}
+            <UserMenu />
+          </div>
+        </div>
+        <div className="md:hidden flex items-center w-full overflow-x-auto whitespace-nowrap pb-1 base-ui-disable-scrollbar">
+          <svg width="32" height="16" viewBox="0 0 32 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="-ml-3 mr-2.5 flex-shrink-0 text-secondary">
+            <line x1="0" y1="8" x2="23" y2="8" stroke="currentColor" strokeWidth="1.5"/>
+            <circle cx="27.25" cy="8" r="3.5" stroke="currentColor" strokeWidth="1.5" fill="var(--color-bg-default)"/>
+          </svg>
           <Breadcrumbs />
         </div>
-        <div className="flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2">
           {me.fleetViewer && <SiloSystemPicker level={systemOrSilo} />}
           <UserMenu />
         </div>

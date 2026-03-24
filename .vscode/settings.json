@@ -18,5 +18,10 @@
   "vite.browserType": "system",
   "vite.buildCommand": "npm run build",
   "vite.devCommand": "npm run start:msw",
-  "deno.enablePaths": ["./tools/deno"]
+  "deno.enablePaths": [
+    "./tools/deno"
+  ],
+  "codeWebChat.configurationsForIntelligentUpdate": [
+    
+  ]
 }
