@@ -1,6 +1,5 @@
 {
-  "buildCommand": "API_MODE=msw npm run build && cp mockServiceWorker.js dist/ && npx patch-package --reverse",
-  "outputDirectory": "dist",
+    "outputDirectory": "dist",
   "headers": [
     {
       "source": "/(.*)",
