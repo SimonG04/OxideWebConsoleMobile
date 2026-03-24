@@ -8,7 +8,7 @@
 import { differenceInSeconds, subHours } from 'date-fns'
 // Works without the .js for dev server and prod build in MSW mode, but
 // playwright wants the .js. No idea why, let's just add the .js.
-import { IPv4, IPv6 } from 'ip-num/IPNumber.js'
+import { IPv4, IPv6 } from 'ip-num'
 import { match } from 'ts-pattern'
 
 import {

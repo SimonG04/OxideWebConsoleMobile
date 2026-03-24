@@ -121,7 +121,8 @@
   ],
   "msw": {
     "workerDirectory": [
-      ""
+      "",
+      "app\\public"
     ]
   }
 }
