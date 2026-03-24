@@ -6,6 +6,7 @@
  * Copyright Oxide Computer Company
  */
 import cn from 'classnames'
+import { useContext } from 'react'
 import { Link } from 'react-router'
 
 import { api, navToLogin, useApiMutation } from '@oxide/api'
@@ -22,6 +23,7 @@ import {
 
 import { useCrumbs } from '~/hooks/use-crumbs'
 import { useCurrentUser } from '~/hooks/use-current-user'
+import { MobileMenuContext } from '~/layouts/helpers'
 import { useThemeStore, type Theme } from '~/stores/theme'
 import { buttonStyle } from '~/ui/lib/Button'
 import * as DropdownMenu from '~/ui/lib/DropdownMenu'
@@ -37,12 +39,13 @@ export function TopBar({ systemOrSilo }: { systemOrSilo: 'system' | 'silo' }) {
   // Each element will occupy one of the top column slots provided by `PageContainer`.
   return (
     <>
-      <div className="border-secondary flex items-center border-r border-b px-2">
+      <div className="border-secondary hidden items-center border-r border-b px-2 md:flex">
         <HomeButton level={systemOrSilo} />
       </div>
-      {/* Height is governed by PageContainer grid */}
-      <div className="bg-default border-secondary flex items-center justify-between gap-4 border-b px-3">
-        <div className="flex flex-1 gap-2.5">
+      {/* Height is governed by PageContainer grid on desktop, explicit on mobile */}
+      <div className="bg-default border-secondary flex h-[var(--top-bar-height)] shrink-0 items-center justify-between gap-4 border-b px-3 md:h-auto">
+        <div className="flex min-w-0 flex-1 items-center gap-2.5">
+          <MobileMenuButton />
           <Breadcrumbs />
         </div>
         <div className="flex items-center gap-2">
@@ -51,6 +54,21 @@ export function TopBar({ systemOrSilo }: { systemOrSilo: 'system' | 'silo' }) {
         </div>
       </div>
     </>
+  )
+}
+
+function MobileMenuButton() {
+  const { isOpen, setIsOpen } = useContext(MobileMenuContext)
+  return (
+    <button
+      className="text-tertiary hover:bg-hover hover:text-default mr-1 flex items-center justify-center rounded-md p-1.5 md:hidden"
+      onClick={() => setIsOpen(!isOpen)}
+      aria-label="Toggle menu"
+    >
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M2 4h12v1.5H2zM2 7.25h12v1.5H2zM2 10.5h12V12H2z" />
+      </svg>
+    </button>
   )
 }
 

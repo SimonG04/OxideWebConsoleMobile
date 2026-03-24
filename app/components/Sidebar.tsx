@@ -6,12 +6,14 @@
  * Copyright Oxide Computer Company
  */
 import cn from 'classnames'
+import { useContext, useEffect } from 'react'
 import { Link, useLocation } from 'react-router'
 
-import { Action16Icon, Document16Icon } from '@oxide/design-system/icons/react'
+import { Action16Icon, Document16Icon, Close12Icon } from '@oxide/design-system/icons/react'
 
 import { useIsActivePath } from '~/hooks/use-is-active-path'
 import { openQuickActions } from '~/hooks/use-quick-actions'
+import { MobileMenuContext } from '~/layouts/helpers'
 import { Button } from '~/ui/lib/Button'
 import { Truncate } from '~/ui/lib/Truncate'
 
@@ -61,13 +63,42 @@ const JumpToButton = () => {
 }
 
 export function Sidebar({ children }: { children: React.ReactNode }) {
+  const { isOpen, setIsOpen } = useContext(MobileMenuContext)
+  const location = useLocation()
+
+  useEffect(() => {
+    setIsOpen(false)
+  }, [location.pathname, setIsOpen])
+
   return (
-    <div className="text-sans-md text-raise border-secondary flex flex-col border-r">
-      <div className="mx-3 mt-4">
-        <JumpToButton />
+    <>
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 md:hidden"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+      <div
+        className={cn(
+          'bg-default text-sans-md text-raise border-secondary flex flex-col overflow-y-auto',
+          'fixed inset-y-0 left-0 z-50 w-[14.25rem] transform transition-transform duration-200 ease-in-out',
+          'md:relative md:z-auto md:w-auto md:translate-x-0 md:border-r',
+          isOpen ? 'translate-x-0 shadow-lg' : '-translate-x-full'
+        )}
+      >
+        <div className="flex items-center justify-between border-secondary border-b px-3 py-3 md:hidden">
+          <div className="text-sans-semi-lg">Menu</div>
+          <button onClick={() => setIsOpen(false)} className="text-secondary hover:text-default p-1">
+            <Close12Icon />
+          </button>
+        </div>
+        <div className="mx-3 mt-4">
+          <JumpToButton />
+        </div>
+        {children}
       </div>
-      {children}
-    </div>
+    </>
   )
 }
 
