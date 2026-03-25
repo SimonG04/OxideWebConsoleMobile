@@ -65,6 +65,7 @@ function render() {
   )
 }
 
+/*
 if (process.env.MSW) {
   // MSW has NODE_ENV !== prod built into it, but let's be extra safe
   // need to defer requests until after the mock server starts up
@@ -72,3 +73,13 @@ if (process.env.MSW) {
 } else {
   render()
 }
+*/
+
+// Force the mock API to start before React renders, 
+// ensuring Rollup includes it in the Vercel production bundle.
+startMockAPI().then(() => {
+  render()
+}).catch((err) => {
+  console.error("Failed to start mock API", err)
+  render() // fallback just in case
+})
