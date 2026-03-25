@@ -29,7 +29,7 @@
     "fmt:check": "oxfmt --check",
     "openapi-gen-ts": "openapi-gen-ts",
     "gen-api": "./tools/generate_api_client.sh",
-    "postinstall": "patch-package",
+    "postinstall": "patch-package && msw init public/ --no-save",
     "prepare": "husky",
     "vercel-build": "vite build"
   },
