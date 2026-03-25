@@ -26,6 +26,12 @@ importers:
       '@react-aria/live-announcer':
         specifier: ^3.3.4
         version: 3.4.4
+      '@react-aria/overlays':
+        specifier: ^3.31.2
+        version: 3.31.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@react-types/datepicker':
+        specifier: ^3.13.5
+        version: 3.13.5(react@19.2.4)
       '@tailwindcss/container-queries':
         specifier: ^0.1.1
         version: 0.1.1(tailwindcss@4.2.2)
