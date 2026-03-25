@@ -112,7 +112,7 @@ export async function startMockAPI() {
       await sleep(1000) // make sure everything is ready first (especially a problem in CI)
       await streamBootLog(client.socket, serialConsoleText)
     })
-  )).start({
+  ).start({
     // This tells MSW exactly where to find its worker file on the deployed site.
     // It removes any ambiguity that might be caused by Vercel's routing.
     serviceWorker: {
