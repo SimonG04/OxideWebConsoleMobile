@@ -36,3 +36,4 @@ playwright-report/
 # Visual regression snapshots
 test/visual/**/*-snapshots/
 test/visual/**/*.png
+commit.bat
